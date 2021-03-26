@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator playerAnimator;
     float horizontalMove = 0f;
     bool facingRight = true;
 
-    [Header("Forces/Speeds")]
+    [Header("Movement")]
     [SerializeField] float jumpForce = 300f;
     [SerializeField] float moveSpeed = 5f;
+    bool moving;
 
     [Header("Ground Checking")]
     [SerializeField] Transform groundCheck;             //Origin for ground check
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -38,6 +41,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
+        if(horizontalMove != 0)
+        {
+            moving = true;
+        }
+        else
+        {
+            moving = false;
+        }
         //Debug.Log(horizontalMove);
     }
 
@@ -57,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
+        AnimationController();
     }
 
     private void Jump()
@@ -70,5 +82,11 @@ public class PlayerMovement : MonoBehaviour
         facingRight = !facingRight;
 
         transform.Rotate(0f, 180f, 0f);
+    }
+
+    private void AnimationController()
+    {
+        playerAnimator.SetBool("IsJumping", jumping);
+        playerAnimator.SetBool("IsMoving", moving);
     }
 }
