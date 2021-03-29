@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheck;             //Origin for ground check
     [SerializeField] LayerMask groundMask;              //Ground Layer
     bool isGrounded;
-    bool jumping = false;
+    bool jumping;
+    bool canJump;
 
     int IsJumpingHash, IsMovingHash;
 
@@ -32,17 +33,31 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MovementHandler();
+        MovePlayer();
+        AnimationController();
+    }
+
+    void MovementHandler()
+    {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, groundMask);
-        if(isGrounded)
+        if (isGrounded)
         {
             jumping = false;
+            canJump = true;
+        }
+        else
+        {
+            jumping = true;
+            canJump = false;
         }
         //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
         Debug.Log("Grounded?: " + isGrounded);
         Debug.Log("Jumping?: " + jumping);
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && !jumping)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && canJump)
         {
+            canJump = false;
             jumping = true;
         }
 
@@ -56,8 +71,6 @@ public class PlayerMovement : MonoBehaviour
             moving = false;
         }
         Debug.Log("Moving?:" + moving);
-
-        MovePlayer();
     }
 
     void MovePlayer()
@@ -76,13 +89,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-        AnimationController();
     }
 
     private void Jump()
     {
-        if(isGrounded)
-            rb.AddForce(new Vector2(0, jumpForce));
+        rb.AddForce(new Vector2(0, jumpForce));
     }
 
     private void Flip()
