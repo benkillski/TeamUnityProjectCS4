@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
     bool jumping = false;
 
+    int IsJumpingHash, IsMovingHash;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,9 +33,13 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, groundMask);
-        Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
-        //Debug.Log("Grounded?: " + isGrounded);
-        //Debug.Log("Can Jump?: " + jumping);
+        if(isGrounded)
+        {
+            jumping = false;
+        }
+        //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
+        Debug.Log("Grounded?: " + isGrounded);
+        Debug.Log("Jumping?: " + jumping);
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && !jumping)
         {
@@ -49,10 +55,12 @@ public class PlayerMovement : MonoBehaviour
         {
             moving = false;
         }
-        //Debug.Log(horizontalMove);
+        Debug.Log("Moving?:" + moving);
+
+        MovePlayer();
     }
 
-    void FixedUpdate()
+    void MovePlayer()
     {
         rb.velocity = new Vector2(horizontalMove * moveSpeed, rb.velocity.y);
         if (jumping)
@@ -73,8 +81,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        rb.AddForce(new Vector2(0, jumpForce));
-        jumping = false;
+        if(isGrounded)
+            rb.AddForce(new Vector2(0, jumpForce));
     }
 
     private void Flip()
@@ -86,6 +94,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimationController()
     {
+        IsJumpingHash = jumping.GetHashCode();
+        IsMovingHash = moving.GetHashCode();
+
         playerAnimator.SetBool("IsJumping", jumping);
         playerAnimator.SetBool("IsMoving", moving);
     }
