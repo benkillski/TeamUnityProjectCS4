@@ -46,11 +46,7 @@ public class PlayerMovement : MonoBehaviour
             jumping = false;
             canJump = true;
         }
-        else
-        {
-            jumping = true;
-            canJump = false;
-        }
+
         //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
         Debug.Log("Grounded?: " + isGrounded);
         Debug.Log("Jumping?: " + jumping);
@@ -79,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         if (jumping)
         {
             Jump();
+            jumping = false;
         }
 
         if (horizontalMove < 0.0f && facingRight)
@@ -94,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(new Vector2(0, jumpForce));
+        canJump = false;
     }
 
     private void Flip()
