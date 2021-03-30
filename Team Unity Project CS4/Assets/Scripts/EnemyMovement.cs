@@ -16,11 +16,18 @@ public class EnemyMovement : MonoBehaviour
         if (transform.position.x >= 0.0f)
         {
             dirRight = false;
+            //Flip();
         }
 
         if (transform.position.x <= -6)
         {
             dirRight = true;
+            //Flip();
         }
+    }
+
+    private void Flip()
+    {
+        transform.Rotate(0f, 180f, 0f);
     }
 }
