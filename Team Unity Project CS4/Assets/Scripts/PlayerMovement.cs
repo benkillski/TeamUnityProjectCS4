@@ -21,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
     bool jumping;
     bool canJump;
 
-    int IsJumpingHash, IsMovingHash;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -34,29 +32,31 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         MovementHandler();
-        MovePlayer();
         AnimationController();
     }
 
     void MovementHandler()
     {
+        //Jumping Logic
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, groundMask);
         if (isGrounded)
         {
             jumping = false;
             canJump = true;
         }
-
-        //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
-        Debug.Log("Grounded?: " + isGrounded);
-        Debug.Log("Jumping?: " + jumping);
+        else
+        {
+            jumping = true;
+            canJump = false;
+        }
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && canJump)
         {
-            canJump = false;
             jumping = true;
+            Jump();
         }
 
+        //Move Left/Right Logic
         horizontalMove = Input.GetAxisRaw("Horizontal");
         if (horizontalMove != 0)
         {
@@ -65,17 +65,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moving = false;
-        }
-        Debug.Log("Moving?:" + moving);
-    }
-
-    void MovePlayer()
-    {
-        rb.velocity = new Vector2(horizontalMove * moveSpeed, rb.velocity.y);
-        if (jumping)
-        {
-            Jump();
-            jumping = false;
         }
 
         if (horizontalMove < 0.0f && facingRight)
@@ -86,12 +75,19 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
+
+        rb.velocity = new Vector2(horizontalMove * moveSpeed, rb.velocity.y);
+
+        //Debug.Log("Moving?:" + moving);
+        //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
+        //Debug.Log("Grounded?: " + isGrounded);
+        Debug.Log("Jumping?: " + jumping);
     }
 
     private void Jump()
     {
-        rb.AddForce(new Vector2(0, jumpForce));
         canJump = false;
+        rb.AddForce(new Vector2(0, jumpForce));
     }
 
     private void Flip()
@@ -103,9 +99,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimationController()
     {
-        IsJumpingHash = jumping.GetHashCode();
-        IsMovingHash = moving.GetHashCode();
-
         playerAnimator.SetBool("IsJumping", jumping);
         playerAnimator.SetBool("IsMoving", moving);
     }
