@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if(collision.gameObject.name == "Player")
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<PlayerHealth>().KillPlayer();
         }
     }
 }
