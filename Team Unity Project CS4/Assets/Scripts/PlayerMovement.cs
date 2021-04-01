@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("Moving?:" + moving);
         //Debug.DrawLine(transform.position, transform.position - new Vector3(0, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, 0), Color.red);
         //Debug.Log("Grounded?: " + isGrounded);
-        Debug.Log("Jumping?: " + jumping);
+        //Debug.Log("Jumping?: " + jumping);
     }
 
     private void Jump()
