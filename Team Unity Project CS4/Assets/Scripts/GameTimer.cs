@@ -29,7 +29,16 @@ public class GameTimer : MonoBehaviour
 
     private void TimerEnd()
     {
-        //Kill Player
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if(player != null)
+        {
+            player.GetComponent<PlayerHealth>().KillPlayer();
+        }
+        else
+        {
+            Debug.LogError("PLAYER NOT FOUND!");
+        }
     }
 
     private void UpdateGameTimerUI()
