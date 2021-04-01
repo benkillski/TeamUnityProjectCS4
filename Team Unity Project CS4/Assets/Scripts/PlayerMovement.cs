@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Checking")]
     [SerializeField] Transform groundCheck;             //Origin for ground check
     [SerializeField] LayerMask groundMask;              //Ground Layer
-    bool isGrounded;
+    public bool isGrounded;
     bool jumping;
     bool canJump;
 
@@ -108,5 +108,13 @@ public class PlayerMovement : MonoBehaviour
 
         playerAnimator.SetBool("IsJumping", jumping);
         playerAnimator.SetBool("IsMoving", moving);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Enemy" && isGrounded == false)
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }
