@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     bool facingRight = true;
 
     [Header("Movement")]
-    [SerializeField] float jumpForce = 300f;
+    [SerializeField] float jumpForce = 400f;
     [SerializeField] float moveSpeed = 5f;
     bool moving;
 
