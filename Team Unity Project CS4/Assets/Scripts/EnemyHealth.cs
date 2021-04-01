@@ -11,7 +11,11 @@ public class EnemyHealth : MonoBehaviour
             if((collision.gameObject.GetComponent<PlayerMovement>().isGrounded))
             {
                 collision.gameObject.GetComponent<PlayerHealth>().KillPlayer();
-
+            }
+            else
+            {
+                Destroy(gameObject);
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 150));
             }
         }
     }
