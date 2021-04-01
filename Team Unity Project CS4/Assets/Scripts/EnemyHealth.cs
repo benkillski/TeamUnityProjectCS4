@@ -16,6 +16,7 @@ public class EnemyHealth : MonoBehaviour
             {
                 Destroy(gameObject);
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 150));
+                collision.gameObject.GetComponent<PlayerScore>().AddScore(10);
             }
         }
     }
