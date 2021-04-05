@@ -5,7 +5,6 @@ public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private float moveSpeed = 5f;
-    bool facingRight = false;
 
     [Header("Edge Checking")]
     [SerializeField] private Transform edgeCheck;
@@ -18,20 +17,20 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        isEdge = Physics2D.Raycast(edgeCheck.transform.position, Vector2.down);
-        if (!isEdge)
+        RaycastHit2D hit = Physics2D.Raycast(edgeCheck.transform.position, Vector2.down);
+        
+        Debug.Log(hit.collider);
+        if (hit.collider.tag == "DeathZone" || hit.collider == null)
             Flip();
 
         Debug.DrawRay(edgeCheck.transform.position, Vector2.down, Color.red);
+        rb.velocity = transform.right * moveSpeed;
 
-        rb.velocity = new Vector2(transform.position.x * moveSpeed, rb.velocity.y);
-        Debug.Log(rb.velocity);
+
     }
 
     private void Flip()
     {
-        facingRight = !facingRight;
-
         transform.Rotate(0f, 180f, 0f);
     }
 }
