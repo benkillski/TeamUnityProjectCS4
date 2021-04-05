@@ -3,27 +3,18 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    private Rigidbody2D rb;
     private bool dirRight = true;
     public float speed = 2.0f;
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     void Update()
     {
-        if (dirRight)
-            transform.Translate(Vector2.right * speed * Time.deltaTime);
-        else
-            transform.Translate(-Vector2.right * speed * Time.deltaTime);
-
-        if (transform.position.x >= 0.0f)
-        {
-            dirRight = false;
-            //Flip();
-        }
-
-        if (transform.position.x <= -6)
-        {
-            dirRight = true;
-            //Flip();
-        }
+        
     }
 
     private void Flip()

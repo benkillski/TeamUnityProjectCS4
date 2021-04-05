@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -88,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
     {
         canJump = false;
         rb.AddForce(new Vector2(0, jumpForce));
+        FindObjectOfType<AudioManager>().Play("Player Jump");
+
     }
 
     private void Flip()

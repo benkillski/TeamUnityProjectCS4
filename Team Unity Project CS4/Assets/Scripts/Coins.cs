@@ -23,6 +23,7 @@ public class Coins : MonoBehaviour
             {
                 collision.gameObject.GetComponent<PlayerScore>().AddScore(100);
             }
+            FindObjectOfType<AudioManager>().Play("Coin Pickup");
             Destroy(gameObject);
         }
     }
