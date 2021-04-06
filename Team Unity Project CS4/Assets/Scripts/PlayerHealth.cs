@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] GameObject deadPlayerPrefab;
+    [SerializeField] GameObject gameOverScreen;
     public void KillPlayer()
     {
-        Instantiate<GameObject>(deadPlayerPrefab, transform.position, Quaternion.identity);
+        Instantiate(deadPlayerPrefab, transform.position, Quaternion.identity);
+        gameOverScreen.SetActive(true);
         Destroy(gameObject);
     }
 }
