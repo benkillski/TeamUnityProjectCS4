@@ -16,17 +16,19 @@ public class PlayerMovement : MonoBehaviour
     bool moving;
 
     [Header("Ground Checking")]
-    [SerializeField] Transform groundCheck;             //Origin for ground check
+    //[SerializeField] Transform groundCheck;             //Origin for ground check
     [SerializeField] LayerMask groundMask;              //Ground Layer
     public bool isGrounded;
     bool jumping;
     bool canJump;
+    Collider2D playerCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -39,8 +41,7 @@ public class PlayerMovement : MonoBehaviour
     void MovementHandler()
     {
         //Jumping Logic
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, GetComponent<SpriteRenderer>().bounds.extents.y + 0.1f, groundMask);
-        if (isGrounded)
+        if (IsGrounded())
         {
             jumping = false;
             canJump = true;
@@ -51,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
             canJump = false;
         }
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && canJump)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && IsGrounded() && canJump)
         {
             jumping = true;
             Jump();
@@ -98,6 +99,25 @@ public class PlayerMovement : MonoBehaviour
         facingRight = !facingRight;
 
         transform.Rotate(0f, 180f, 0f);
+    }
+
+    private bool IsGrounded()
+    {
+        float extraHeight = 0.1f;
+        RaycastHit2D hit = Physics2D.CapsuleCast(playerCollider.bounds.center, playerCollider.bounds.size, CapsuleDirection2D.Vertical, 0, Vector2.down, playerCollider.bounds.extents.y, groundMask);
+        Color rayColor;
+        if (hit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(playerCollider.bounds.center, Vector2.down, rayColor);
+        Debug.Log(hit.collider);
+
+        return hit.collider != null;
     }
 
     private void AnimationController()
