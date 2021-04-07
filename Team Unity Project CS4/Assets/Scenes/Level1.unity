@@ -21635,7 +21635,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 400
   moveSpeed: 5
-  groundCheck: {fileID: 1973181510}
   groundMask:
     serializedVersion: 2
     m_Bits: 64
