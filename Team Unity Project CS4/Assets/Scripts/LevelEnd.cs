@@ -4,23 +4,13 @@ using UnityEngine;
 
 public class LevelEnd : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-
+            FindObjectOfType<AudioManager>().Play("Level Completed");
+            FindObjectOfType<GameTimer>().StopTimer();
+            collision.gameObject.GetComponent<PlayerScore>().AddScore(500);
         }
     }
 }

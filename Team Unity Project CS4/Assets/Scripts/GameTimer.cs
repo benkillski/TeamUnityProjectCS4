@@ -7,10 +7,12 @@ public class GameTimer : MonoBehaviour
 {
     public float targetTime;
     TextMeshProUGUI gameTimerUI;
+    bool isCounting = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        isCounting = true;
         gameTimerUI = gameObject.GetComponent<TextMeshProUGUI>();
         UpdateGameTimerUI();
     }
@@ -18,8 +20,11 @@ public class GameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isCounting)
+        { 
         targetTime -= Time.deltaTime;
         UpdateGameTimerUI();
+        }
 
         if (targetTime <= 0.0f)
         {
@@ -39,6 +44,11 @@ public class GameTimer : MonoBehaviour
         {
             Debug.LogError("PLAYER NOT FOUND!");
         }
+    }
+
+    public void StopTimer()
+    {
+        isCounting = false;
     }
 
     private void UpdateGameTimerUI()
