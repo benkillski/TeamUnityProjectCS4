@@ -15,7 +15,7 @@ public class EnemyHealth : MonoBehaviour
             else
             {
                 Destroy(gameObject);
-                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 150));
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 400));
                 collision.gameObject.GetComponent<PlayerScore>().AddScore(10);
                 FindObjectOfType<AudioManager>().Play("Enemy Death");
             }

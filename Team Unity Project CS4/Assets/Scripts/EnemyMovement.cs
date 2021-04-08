@@ -20,7 +20,7 @@ public class EnemyMovement : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(edgeCheck.transform.position, Vector2.down);
         
         Debug.Log(hit.collider);
-        if (hit.collider.tag == "DeathZone" || hit.collider == null)
+        if (hit.collider.tag == "DeathZone" || hit.collider.tag == "Enemy" || hit.collider == null)
             Flip();
 
         Debug.DrawRay(edgeCheck.transform.position, Vector2.down, Color.red);
